@@ -39,7 +39,7 @@ var Doc = Formatter.extend();
  */
 
 Doc.prototype.beforeSuite = function(suite) {
-  if (!suite.parent) this.println();
+  if (!suite.parent.parent) this.println();
   this.println(indent(suite) + suite.title);
 };
 
@@ -51,9 +51,8 @@ Doc.prototype.beforeSuite = function(suite) {
  */
 
 Doc.prototype.afterTest = function(test) {
-  if (test.skipped) return;
-  var color = test.failed ? 'red' : 'green';
-  this.println(indent(test) + this.color(test.title, color));
+  if (test.status === 'skipped') return;
+  this.println(indent(test) + this.color(test.title, this.statusColor[test.status]));
 };
 
 /**
